@@ -1,0 +1,5 @@
+INDEX VERSION 1.132+D:\Arturo\Documents\Arturo\2023\Facultad\OO1\.metadata\.plugins\org.eclipse.jdt.core
+1513731006.index
+1865797976.index
+3568981216.index
+759071528.index

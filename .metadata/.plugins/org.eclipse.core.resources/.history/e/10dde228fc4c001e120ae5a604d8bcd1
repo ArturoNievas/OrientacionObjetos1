@@ -1,0 +1,7 @@
+package ar.edu.info.oo1.ej4_figuras;
+
+public class Cuerpo3D {
+
+	private double altura;
+	private 
+}
