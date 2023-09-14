@@ -41,9 +41,7 @@ public class Farola {
 	public void turnOn() {
 		if (!this.encendida) {
 			this.encendida = true;
-			for (Farola farola: this.farolasVecinas) {
-				farola.turnOn();
-			}
+			this.farolasVecinas.stream().forEach(farola -> farola.turnOn());
 		}
 	}
 	
@@ -53,9 +51,7 @@ public class Farola {
 	public void turnOff() {
 		if (this.encendida) {
 			this.encendida = false;
-			for (Farola farola: this.farolasVecinas) {
-				farola.turnOff();
-			}
+			this.farolasVecinas.stream().forEach(farola -> farola.turnOff());
 		}
 	}
 	
