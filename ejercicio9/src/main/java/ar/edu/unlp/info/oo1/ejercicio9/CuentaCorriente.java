@@ -22,25 +22,4 @@ public class CuentaCorriente extends Cuenta {
 		return (this.getSaldo() + this.descubierto) >= monto;
 	}
 
-	@Override
-	public boolean extraer(double monto) {
-		if (this.puedoExtraer(monto)) {
-			this.extraerSinControlar(monto);
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	@Override
-	public boolean transferirACuenta(double monto, Cuenta cuentaDestino) {
-		if (this.puedoExtraer(monto)) {
-			this.extraerSinControlar(monto);
-			cuentaDestino.depositar(monto);
-			return true;
-		} else {
-			return false;
-		}
-	}
-
 }
