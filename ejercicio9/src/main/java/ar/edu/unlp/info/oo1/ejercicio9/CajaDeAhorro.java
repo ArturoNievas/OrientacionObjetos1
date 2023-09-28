@@ -14,4 +14,9 @@ public class CajaDeAhorro extends Cuenta {
 	public boolean puedoExtraer(double monto) {
 		return (this.getSaldo() *1.02) >= monto;
 	}
+
+	@Override
+	public void depositar(double monto) {
+		super.depositar(monto*0.98);
+	}
 }
