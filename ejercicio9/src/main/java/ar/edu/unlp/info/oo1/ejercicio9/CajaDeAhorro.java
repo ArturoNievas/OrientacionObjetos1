@@ -16,14 +16,5 @@ public class CajaDeAhorro extends Cuenta {
 		super.depositar(monto*0.98);
 	}
 
-	@Override
-	public boolean transferirACuenta(double monto, Cuenta cuentaDestino) {
-		if (this.puedoExtraer(monto*1.02)) {
-			super.extraer(monto*0.2);
-			return super.transferirACuenta(monto,cuentaDestino);
-		} else {
-			return false;
-		}
-	}
 
 }
