@@ -6,15 +6,8 @@ public class CajaDeAhorro extends Cuenta {
 		super();
 	}
 
-	@Override
-	public boolean extraer(double monto) {
-		return super.extraer(monto*1.02);
+	protected void extraerSinControlar(double monto){
+		super.extraerSinControlar(monto*1.02);
 	}
-
-	@Override
-	public void depositar(double monto) {
-		super.depositar(monto*0.98);
-	}
-
 
 }
