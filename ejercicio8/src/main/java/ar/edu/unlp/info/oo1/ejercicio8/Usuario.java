@@ -33,15 +33,13 @@ public class Usuario {
 
 	public Factura facturarEnBaseA(double precioKWh){
 		Consumo ultimoConsumo = this.ultimoConsumo();
-		Factura factura = null;
+		Factura factura = new Factura(0,0,this);
 		if (ultimoConsumo != null) {
 			double descuento = 0;
 			if (ultimoConsumo.factorDePotencia()>0.8) {
 				descuento = 10;
 			}
 			factura = new Factura(this.ultimoConsumoActiva()*precioKWh,descuento,this);
-		} else {
-			factura = new Factura(0,0,this);
 		}
 		this.facturas.add(factura);
 		return factura;
