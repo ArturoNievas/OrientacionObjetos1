@@ -10,7 +10,6 @@ public class PlazoFijo extends Inversion {
 	private double interesPorDia;
 
 	public PlazoFijo() {
-		this.montoDepositado = 0;
 		this.fechaDeConstruccion = LocalDate.now();
 	}
 
