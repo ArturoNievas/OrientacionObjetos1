@@ -10,4 +10,8 @@ public class CajaDeAhorro extends Cuenta {
 		super.extraerSinControlar(monto*1.02);
 	}
 
+	@Override
+	public boolean puedoExtraer(double monto) {
+		return (this.getSaldo() *1.02) >= monto;
+	}
 }
