@@ -40,4 +40,21 @@ public class DateLapse {
 	public boolean overlaps(DateLapse otroPeriodo) {
 		return this.includesDate(otroPeriodo.getFrom()) || this.includesDate(otroPeriodo.getTo()) || (this.from.isAfter(otroPeriodo.getFrom()) && this.to.isBefore(otroPeriodo.getTo()));
 	}
+	
+	public int daysOverlaps(DateLapse otroPeriodo) {
+		if (this.overlaps(otroPeriodo)) {
+			if (this.includesDateLapse(otroPeriodo)) {
+				return this.sizeInDays();
+			} else {
+				if (otroPeriodo.getFrom().isAfter(this.from)) {
+					return (int) ChronoUnit.DAYS.between(otroPeriodo.getFrom(), this.to);
+				} else {
+					return (int) ChronoUnit.DAYS.between(this.from, otroPeriodo.getTo());
+				}
+			}
+		} else {
+			return 0;
+		}
+		
+	}
 }

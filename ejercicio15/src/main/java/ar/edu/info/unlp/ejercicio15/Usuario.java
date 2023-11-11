@@ -8,7 +8,6 @@ public class Usuario {
 	private int dni;
 	private String direccion;
 	private List<Propiedad> propiedades;
-	private List<Reserva> reservas;
 	
 	public Usuario(String nombre, String direccion, int dni) {
 		this.nombre = nombre;
@@ -45,20 +44,8 @@ public class Usuario {
 		return propiedades;
 	}
 	
-	public List<Reserva> getReservas() {
-		return reservas;
-	}
-	
 	public void registrarPropiedad(Propiedad propiedad) {
 		this.propiedades.add(propiedad);
-	}
-	
-	public void reservar(Reserva reserva) {
-		this.reservas.add(reserva);
-	}
-	
-	public void cancelarReserva(Reserva reserva) {
-		this.reservas.remove(reserva);
 	}
 	
 	public double ingresosPorPeriodo(DateLapse periodo) {

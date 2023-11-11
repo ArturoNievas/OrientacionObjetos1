@@ -3,13 +3,13 @@ package ar.edu.info.unlp.ejercicio15;
 public class Reserva {
 
 	private DateLapse periodo;
-	private Propiedad propiedad;
 	private Usuario usuario;
+	private double precioPorNoche;
 	
-	public Reserva(DateLapse periodo, Propiedad propiedad, Usuario usuario) {
+	public Reserva(DateLapse periodo, Usuario usuario, double precioPorNoche) {
 		this.periodo = periodo;
-		this.propiedad = propiedad;
 		this.usuario = usuario;
+		this.precioPorNoche = precioPorNoche;
 	}
 
 	public DateLapse getPeriodo() {
@@ -19,15 +19,7 @@ public class Reserva {
 	public void setPeriodo(DateLapse periodo) {
 		this.periodo = periodo;
 	}
-
-	public Propiedad getPropiedad() {
-		return propiedad;
-	}
-
-	public void setPropiedad(Propiedad propiedad) {
-		this.propiedad = propiedad;
-	}
-
+	
 	public Usuario getUsuario() {
 		return usuario;
 	}
@@ -36,7 +28,15 @@ public class Reserva {
 		this.usuario = usuario;
 	}
 
+	public double getPrecioPorNoche() {
+		return precioPorNoche;
+	}
+
+	public void setPrecioPorNoche(double precioPorNoche) {
+		this.precioPorNoche = precioPorNoche;
+	}
+
 	public double calcularPrecio() {
-		return this.periodo.sizeInDays()*this.propiedad.getPrecioPorNoche();
+		return this.periodo.sizeInDays()*this.precioPorNoche;
 	}
 }

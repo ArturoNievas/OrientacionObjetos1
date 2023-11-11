@@ -6,7 +6,12 @@ public class Moderada extends PoliticaCancelacion {
 
 	@Override
 	public double montoReembolsoCancelacion(Reserva reserva, LocalDate fecha) {
-		return 0;
+		DateLapse t = new DateLapse(LocalDate.now(),reserva.getPeriodo().getFrom());
+		if (t.sizeInDays()<=7) {
+			return reserva.calcularPrecio();
+		} else {
+			return 0;
+		}
 	}
 
 }

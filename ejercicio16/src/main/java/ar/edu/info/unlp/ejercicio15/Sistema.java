@@ -2,6 +2,7 @@ package ar.edu.info.unlp.ejercicio15;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Sistema {
 
@@ -28,8 +29,8 @@ public class Sistema {
 	}
 	
 	// Suponemos que el usuario ya esta registrado, sino hay que preguntar si está registrado y de no ser así registrarlo
-	public Propiedad registrarPropiedad(String nombre, String descripcion, double precioPorNoche, String direccion, PoliticaCancelacion politicaCancelacion, Usuario usuario) {
-		Propiedad nuevaPropiedad = new Propiedad(nombre,descripcion,precioPorNoche,direccion,politicaCancelacion);
+	public Propiedad registrarPropiedad(String nombre, String descripcion, double precioPorNoche, String direccion, PoliticaCancelacion politica, Usuario usuario) {
+		Propiedad nuevaPropiedad = new Propiedad(nombre,descripcion,precioPorNoche,direccion,politica);
 		this.propiedades.add(nuevaPropiedad);
 		usuario.registrarPropiedad(nuevaPropiedad);
 		return nuevaPropiedad;
@@ -42,22 +43,28 @@ public class Sistema {
 	public Reserva reservar(Propiedad propiedad, DateLapse periodo, Usuario usuario) {
 		Reserva nuevaReserva = null;
 		if (propiedad.disponible(periodo)) {
-			nuevaReserva = new Reserva(periodo,propiedad,usuario);
+			nuevaReserva = new Reserva(periodo,usuario,propiedad.getPrecioPorNoche());
 			propiedad.reservar(nuevaReserva);
-			usuario.reservar(nuevaReserva);
 		}
 		return nuevaReserva;
 	}
 	
+	public double precioReserva(Reserva reserva) {
+		return reserva.calcularPrecio();
+	}
+	
+	public double montoAReembolsar(Reserva reserva) {
+		return this.propiedades.stream().filter(p -> p.reservaCorresponde(reserva)).findFirst().orElse(null).montoAReembolsar(reserva);
+	}
+	
 	public void cancelarReserva(Reserva reserva) {
 		if (reserva.getPeriodo().getFrom().isAfter(LocalDate.now())){
-			reserva.getPropiedad().cancelarReserva(reserva);
-			reserva.getUsuario().cancelarReserva(reserva);
+			this.propiedades.stream().filter(p -> p.reservaCorresponde(reserva)).findFirst().orElse(null).cancelarReserva(reserva);
 		}
 	}
 	
 	public List<Reserva> getReservasUsuario(Usuario usuario){
-		return usuario.getReservas();
+		return this.propiedades.stream().map(p -> p.getReservasUsuario(usuario)).flatMap(List::stream).collect(Collectors.toList());
 	}
 	
 	public double ingresosPropietarioPorPeriodo(Usuario usuario, DateLapse periodo) {

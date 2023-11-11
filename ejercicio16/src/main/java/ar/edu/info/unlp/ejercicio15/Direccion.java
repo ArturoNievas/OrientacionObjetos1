@@ -93,7 +93,7 @@ public class Direccion {
 	
 	public String toString() {
 		String retorno=this.pais+", "+this.provincia+", "+this.ciudad+", "+this.calle+", "+this.numero;
-		if ((this.piso == 0) && (this.departamento == "")) {
+		if ((this.piso != 0) && (this.departamento != "")) {
 			retorno+=", "+this.piso+this.departamento;
 		}
 		retorno+=".";

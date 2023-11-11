@@ -1,6 +1,7 @@
 package ar.edu.info.unlp.ejercicio15;
 
 import java.util.*;
+import java.util.stream.*;
 
 public class Propiedad {
 
@@ -53,6 +54,10 @@ public class Propiedad {
 		return reservas;
 	}
 	
+	public List<Reserva> getReservasUsuario(Usuario usuario) {
+		return this.reservas.stream().filter(r -> r.getUsuario().equals(usuario)).collect(Collectors.toList());
+	}
+	
 	public void reservar(Reserva reserva) {
 		this.reservas.add(reserva);
 	}
@@ -64,9 +69,14 @@ public class Propiedad {
 	public boolean disponible(DateLapse periodo) {
 		return this.reservas.stream().filter(r -> r.getPeriodo().overlaps(periodo)).findFirst().orElse(null) == null;
 	}
+	
+	public boolean reservaCorresponde(Reserva reserva) {
+		return this.reservas.contains(reserva);
+	}
+	
 	// Acá no sabría como tomar tambien los días de las reservas que no están del todo incluidas en el periodo de tiempo provisto
 	public double ingresosPorPeriodo(DateLapse periodo) {
-		return this.reservas.stream().filter(r -> periodo.includesDateLapse(r.getPeriodo())).mapToDouble(r -> r.calcularPrecio()).sum();
+		return this.reservas.stream().mapToInt(r -> periodo.daysOverlaps(r.getPeriodo())).sum() * this.precioPorNoche;
 	}
 	
 }

@@ -2,6 +2,7 @@ package ar.edu.info.unlp.ejercicio15;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Sistema {
 
@@ -42,22 +43,24 @@ public class Sistema {
 	public Reserva reservar(Propiedad propiedad, DateLapse periodo, Usuario usuario) {
 		Reserva nuevaReserva = null;
 		if (propiedad.disponible(periodo)) {
-			nuevaReserva = new Reserva(periodo,propiedad,usuario);
+			nuevaReserva = new Reserva(periodo,usuario);
 			propiedad.reservar(nuevaReserva);
-			usuario.reservar(nuevaReserva);
 		}
 		return nuevaReserva;
 	}
 	
+	public double precioReserva(Reserva reserva) {
+		return reserva.calcularPrecio(this.propiedades.stream().filter(p -> p.reservaCorresponde(reserva)).findFirst().orElse(null).getPrecioPorNoche());
+	}
+	
 	public void cancelarReserva(Reserva reserva) {
 		if (reserva.getPeriodo().getFrom().isAfter(LocalDate.now())){
-			reserva.getPropiedad().cancelarReserva(reserva);
-			reserva.getUsuario().cancelarReserva(reserva);
+			this.propiedades.stream().filter(p -> p.reservaCorresponde(reserva)).findFirst().orElse(null).cancelarReserva(reserva);
 		}
 	}
 	
 	public List<Reserva> getReservasUsuario(Usuario usuario){
-		return usuario.getReservas();
+		return this.propiedades.stream().map(p -> p.getReservasUsuario(usuario)).flatMap(List::stream).collect(Collectors.toList());
 	}
 	
 	public double ingresosPropietarioPorPeriodo(Usuario usuario, DateLapse periodo) {

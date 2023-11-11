@@ -1,6 +1,8 @@
 package ar.edu.info.unlp.ejercicio15;
 
+import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.*;
 
 public class Propiedad {
 
@@ -9,14 +11,14 @@ public class Propiedad {
 	private double precioPorNoche;
 	private String direccion;
 	private List<Reserva> reservas;
-	private PoliticaCancelacion politicaCancelacion;
+	private PoliticaCancelacion politica;
 	
-	public Propiedad(String nombre, String descripccion, double precioPorNoche, String direccion, PoliticaCancelacion politicaCancelacion) {
+	public Propiedad(String nombre, String descripccion, double precioPorNoche, String direccion, PoliticaCancelacion politica) {
 		this.nombre = nombre;
 		this.descripccion = descripccion;
 		this.precioPorNoche = precioPorNoche;
 		this.direccion = direccion;
-		this.politicaCancelacion = politicaCancelacion;
+		this.politica = politica;
 	}
 
 	public String getNombre() {
@@ -55,8 +57,16 @@ public class Propiedad {
 		return reservas;
 	}
 	
+	public List<Reserva> getReservasUsuario(Usuario usuario) {
+		return this.reservas.stream().filter(r -> r.getUsuario().equals(usuario)).collect(Collectors.toList());
+	}
+	
 	public void reservar(Reserva reserva) {
 		this.reservas.add(reserva);
+	}
+	
+	public double montoAReembolsar(Reserva reserva) {
+		return this.politica.montoReembolsoCancelacion(reserva,LocalDate.now());
 	}
 	
 	public void cancelarReserva(Reserva reserva) {
@@ -66,9 +76,13 @@ public class Propiedad {
 	public boolean disponible(DateLapse periodo) {
 		return this.reservas.stream().filter(r -> r.getPeriodo().overlaps(periodo)).findFirst().orElse(null) == null;
 	}
-	// Acá no sabría como tomar tambien los días de las reservas que no están del todo incluidas en el periodo de tiempo provisto
+	
+	public boolean reservaCorresponde(Reserva reserva) {
+		return this.reservas.contains(reserva);
+	}
+	
 	public double ingresosPorPeriodo(DateLapse periodo) {
-		return this.reservas.stream().filter(r -> periodo.includesDateLapse(r.getPeriodo())).mapToDouble(r -> r.calcularPrecio()).sum();
+		return this.reservas.stream().mapToDouble(r -> periodo.daysOverlaps(r.getPeriodo())*r.getPrecioPorNoche()).sum();
 	}
 	
 }
